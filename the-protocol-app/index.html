@@ -355,6 +355,10 @@ html.dark .durs button.on{background:#fff;color:var(--ink)}
 .hrow em{margin-left:auto;font-style:normal;font-weight:700;font-size:15px;font-variant-numeric:tabular-nums}
 .empty{text-align:center;color:var(--soft);font-size:14.5px;padding:6px 0}
 
+/* v5 : bubble 2 lignes */
+.bubble{font-size:15.5px;line-height:1.35;padding:12px 14px;font-weight:500}
+.bubble span{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+.goalTop .bubble{font-size:14.5px}
 /* v4 : tab bar, home, goal */
 .tabs{flex:0 0 auto;display:flex;gap:6px;margin:0 14px 12px;padding:6px;background:#fff;border:var(--bw) solid var(--ink);border-radius:26px;box-shadow:var(--sh);position:relative;z-index:6}
 .tabs.hide{display:none}
@@ -610,9 +614,9 @@ applyTheme(THEME);
 var tipI=0;
 function tips(){
   var s=stats(),t=[];
-  if(!s.all)t.push('Pour bien démarrer, fais 5 minutes de respiration dans Méditer. C’est tout !');
-  else t.push('Déjà '+s.all+' séance'+(s.all>1?'s':'')+' : bravo, continue comme ça !');
-  t.push('Un petit pas chaque jour vaut mieux qu’un grand effort rare.','Bois un verre d’eau avant ta séance, ton corps te dira merci.','Un Pomodoro de 25 minutes suffit pour t’y mettre. Une seule tâche !','Pas sûr de ton énergie du jour ? Passe par Métabolisme.','Le soir, 5 minutes de scan du corps aident à relâcher la journée.','Pose ton téléphone, ferme les yeux, respire. Je reste avec toi.');
+  if(!s.all)t.push('Coucou ! 5 minutes de respiration, et c’est parti 🌿');
+  else t.push('Coucou ! Déjà '+s.all+' séance'+(s.all>1?'s':'')+', bravo 🌟');
+  t.push('Un petit pas chaque jour, ça suffit 🌱','Un verre d’eau avant ta séance ? 💧','25 minutes, une seule tâche. Tu gères 🍅','Respire… ton corps te dit merci 🌬️','Ce soir, un scan du corps pour relâcher 🌙');
   return t;
 }
 var PET='<svg viewBox="0 0 240 240" id="petSvg" role="img" aria-label="Lumi, ton petit guide"><defs><linearGradient id="pB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffc2dd"/><stop offset="1" stop-color="#ff78b4"/></linearGradient><linearGradient id="pC" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffec8a"/><stop offset="1" stop-color="#ffb52e"/></linearGradient></defs>'+
@@ -655,8 +659,7 @@ function renderHome(){
         :{k:'scan',e:'🌙',tag:'Pour toi, ce soir',t:'Scan du corps du soir',p:'Relâche ta journée, guidé à voix douce.',g:'linear-gradient(135deg,#8b5cf6,#f45fb0)'};
   $('homeFit').className='fit home';
   $('homeFit').innerHTML=
-   '<div class="petrow">'+PET+'<div class="bubble" id="bubble"><b>Coucou, je suis Lumi 👑</b><span id="tipTxt">'+T[tipI]+'</span><small>Touche-moi pour un autre conseil ✨</small></div></div>'+
-   '<div class="pills"><div class="pill" style="background:linear-gradient(135deg,#ffd9a8,#ffb066)"><span class="pe">🔥</span><div><b>'+I.streak+'</b> jour'+(I.streak>1?'s':'')+' de suite</div></div><div class="pill" style="background:linear-gradient(135deg,#d9c8ff,#ffb8dc)"><span class="pe">🎯</span><div><b>'+I.wk.all+'/'+GOAL+'</b> cette semaine</div></div></div>'+
+   '<div class="petrow">'+PET+'<div class="bubble" id="bubble"><span id="tipTxt">'+T[tipI]+'</span></div></div>'+
    '<div class="today" style="--g:'+sg.g+'"><i class="d1"></i><i class="d2"></i><div class="tag">'+sg.tag+'</div><div class="trow"><span class="te">'+sg.e+'</span><div><h2>'+sg.t+'</h2><p>'+sg.p+'</p></div></div><button class="cta alt sm" id="goToday">▶ Commencer</button></div>'+
    '<div class="sec"><b>Mes outils</b><button class="lnk" id="seeBox">Tout voir ›</button></div>'+
    '<div class="minis"><button class="mini" data-k="met" style="background:linear-gradient(160deg,#ffe0b8,#ffa85c)"><span class="mi">🔥</span>Métabolisme</button><button class="mini" data-k="med" style="background:linear-gradient(160deg,#cfe6ff,#7fbcff)"><span class="mi">🧘</span>Méditer</button><button class="mini" data-k="pom" style="background:linear-gradient(160deg,#ffd0d5,#ff8f9b)"><span class="mi">🍅</span>Pomodoro</button></div>'+
@@ -712,7 +715,7 @@ function renderProf(){
   var seg=function(arr,cur,attr,colr){return '<div class="seg" style="--sb:'+colr+'">'+arr.map(function(a){return '<button '+attr+'="'+a[0]+'"'+(a[0]===cur?' class="on"':'')+'>'+a[1]+'</button>'}).join('')+'</div>'};
   var I=info(),wc=I.wk;
   var goalRows=GOALS.map(function(g){var n=Math.min(wc[g[0]],g[3]),dots='';for(var i=0;i<g[3];i++)dots+='<i style="'+(i<wc[g[0]]?'background:'+g[4]:'')+'"></i>';return '<div class="gl" style="--bt:'+g[5]+'"><span class="e">'+g[1]+'</span><div class="gn"><b>'+g[2]+'</b><div class="dt">'+dots+'</div></div><em>'+(wc[g[0]]>=g[3]?'✅':n+'/'+g[3])+'</em></div>'}).join('');
-  var left=Math.max(0,GOAL-wk),lumi=wk>=GOAL?'Objectif atteint, bravo ! Tu es incroyable 🎉':wk===0?'On commence la semaine ? Une petite séance suffit !':'Plus que '+left+' séance'+(left>1?'s':'')+' pour ton objectif. Tu y es presque !';
+  var left=Math.max(0,GOAL-wk),lumi=wk>=GOAL?'Objectif atteint, bravo ! 🎉':wk===0?'On commence ? Une séance suffit 🌱':'Plus que '+left+' séance'+(left>1?'s':'')+', tu y es presque !';
   $('profFit').innerHTML=
    '<div class="phero"><div class="av">'+L.e+'</div><div class="in"><b>Niveau '+L.n+' · '+L.name+'</b><small>'+L.into+' / '+L.step+' XP pour le prochain niveau</small><div class="track"><i style="width:0" data-w="'+Math.round(L.pct)+'"></i></div></div></div>'+
    '<div class="card" style="background:linear-gradient(160deg,#fff,#f1ebff)"><div class="ph"><em>📈</em>Mon évolution</div>'+seg([['week','Semaine'],['month','Mois'],['year','Année']],PP,'data-p','#8b5cf6')+

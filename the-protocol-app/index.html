@@ -434,6 +434,45 @@ html.dark .durs button.on{background:#fff;color:var(--ink)}
 #v-sess.br .orbcore .tm{font-size:84px;color:var(--ink)}
 #v-sess.br #sProg{stroke:#2f86f0}
 .device.tiding #v-sess .note,.device.tiding #v-sess .cap,.device.tiding #v-sess .phase{color:var(--ink);text-shadow:0 0 10px rgba(255,255,255,.85),0 0 3px rgba(255,255,255,.9)}
+
+/* v7 : tuiles, Lumi guide, titres */
+@keyframes pulse2{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
+@keyframes sway{0%,100%{transform:rotate(-10deg) translateY(0)}50%{transform:rotate(10deg) translateY(-4px)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-30px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes pop2{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+.a1{animation:bob 2.4s ease-in-out infinite}
+.a2{animation:wob 2.2s ease-in-out infinite}
+.a3{animation:pulse2 1.9s ease-in-out infinite}
+.a4{animation:sway 2.6s ease-in-out infinite}
+.tt{color:var(--tx)}
+.tt::after{content:"";display:block;width:58px;height:7px;border-radius:9px;background:var(--c);margin-top:7px}
+.sub2{color:var(--tx)}
+.petrow.sm{gap:10px}
+.petrow.sm svg{width:74px;height:74px}
+.petrow.sm .bubble{font-size:15px;padding:10px 12px}
+/* découvrir tiles */
+.ben{align-items:center;justify-content:center;text-align:center;gap:10px;padding:16px 8px 14px;min-height:130px}
+.ben .e{width:70px;height:70px;font-size:38px;box-shadow:0 3px 0 var(--ink)}
+.ben b{font-size:17px;line-height:1.1;color:var(--ink)}
+.ben:nth-child(2) .e{animation-delay:.3s}.ben:nth-child(3) .e{animation-delay:.6s}.ben:nth-child(4) .e{animation-delay:.9s}
+.ben.sel .e{animation-duration:1.1s}
+.detail.empty{border-style:dashed;background:transparent;box-shadow:none;align-items:center}
+.detail.empty .hint{font-size:14px}
+.detail b{display:block;margin-bottom:3px}
+/* pick options */
+.opts{display:flex;flex-direction:column;gap:12px}
+.opt{display:flex;align-items:center;gap:12px;padding:12px;border:var(--bw) solid var(--ink);border-radius:22px;background:var(--bt);box-shadow:var(--sh);text-align:left;color:var(--ink);transition:transform .15s,box-shadow .15s}
+.opt:active{transform:translateY(2px)}
+.opt.sel{transform:translateY(-3px);box-shadow:0 7px 0 var(--ink)}
+.opt .oe{flex:0 0 auto;width:60px;height:60px;border-radius:50%;border:var(--bw) solid var(--ink);background:var(--bs);display:grid;place-items:center;font-size:32px;box-shadow:0 3px 0 var(--ink)}
+.opt b{display:block;font-size:19px;line-height:1.1}
+.opt div>span{display:block;font-size:13.5px;color:var(--soft);margin-top:3px;line-height:1.25}
+#pickDet .durs{margin-top:10px}
+#pickDet .durs button{background:#fff;color:var(--ink)}
+/* instructions / conseils : entrée en glissant */
+.view.on .list.stag>*{animation-name:slideIn;animation-duration:.55s}
+.view.on .list.stag .row .e{animation:pop2 .6s cubic-bezier(.3,1.5,.5,1) both,bob 3s ease-in-out .7s infinite}
+.row:active{transform:scale(.98)}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}}
 </style>
 
@@ -516,21 +555,7 @@ html.dark .durs button.on{background:#fff;color:var(--ink)}
   <section class="view" id="v-box"><div class="fit" id="boxFit"></div></section>
   <section class="view" id="v-land"><div class="fit land" id="landFit"></div></section>
   <section class="view" id="v-info"><div class="fit" id="infoFit"></div></section>
-  <section class="view" id="v-pick"><div class="fit" id="pickFit">
-    <div class="pagehead"><h1 class="title">Choisis ta séance</h1><p class="lead">Un moment pour toi. Installe-toi, on s'occupe du reste.</p></div>
-    <div class="pick" style="background:linear-gradient(150deg,#e1f1ff,#d4e6ff)">
-      <div class="hd"><div class="e">🌊</div><div><b>Respiration 3·6·5</b><span>5 min · 30 cycles · rythme lent</span></div></div>
-      <button class="cta sm" id="goBreath">Commencer</button>
-    </div>
-    <div class="pick" style="background:linear-gradient(150deg,#f0e6ff,#ffe3f1)">
-      <div class="hd"><div class="e">🧘</div><div><b>Scan du corps</b><span>Guidé à voix douce, des pieds à la tête</span></div></div>
-      <div class="durs" id="durs"><button data-m="3">3 min</button><button data-m="5" class="on">5 min</button><button data-m="10">10 min</button></div>
-      <button class="cta sm" id="goScan">Commencer</button>
-    </div>
-    <div class="grow"></div>
-    <p class="note">Ferme doucement les yeux dès que la séance démarre.</p>
-    <button class="cta alt sm" id="pickBack">← Retour au menu</button>
-  </div></section>
+  <section class="view" id="v-pick"><div class="fit" id="pickFit"></div></section>
   <section class="view" id="v-sess"><div class="fit" id="sessFit">
     <div class="center"><span class="chip" id="sChip" style="--cb:var(--t-sky)">🌊 Respiration</span></div>
     <p class="note" id="sNote"></p>
@@ -691,9 +716,9 @@ function renderHome(){
   $('homeFit').innerHTML=
    '<div class="petrow">'+PET+'<div class="bubble" id="bubble"><span id="tipTxt">'+T[tipI]+'</span></div></div>'+
    '<div class="today" style="--g:'+sg.g+'"><i class="d1"></i><i class="d2"></i><div class="tag">'+sg.tag+'</div><div class="trow"><span class="te">'+sg.e+'</span><div><h2>'+sg.t+'</h2><p>'+sg.p+'</p></div></div><button class="cta alt sm" id="goToday">▶ Commencer</button></div>'+
+   '<button class="lvl" id="toProf"><div class="av">'+L.e+'</div><div class="in"><b>Niveau '+L.n+' · '+L.name+'</b><div class="track"><i style="width:0" data-w="'+Math.round(L.pct)+'"></i></div><small>'+L.into+' / '+L.step+' XP · 👆 ton profil</small></div><em>›</em></button>'+
    '<div class="sec"><b>Mes outils</b><button class="lnk" id="seeBox">Tout voir ›</button></div>'+
    '<div class="minis"><button class="mini" data-k="met" style="background:linear-gradient(160deg,#ffe0b8,#ffa85c)"><span class="mi">🔥</span>Métabolisme</button><button class="mini" data-k="med" style="background:linear-gradient(160deg,#cfe6ff,#7fbcff)"><span class="mi">🧘</span>Méditer</button><button class="mini" data-k="pom" style="background:linear-gradient(160deg,#ffd0d5,#ff8f9b)"><span class="mi">🍅</span>Pomodoro</button></div>'+
-   '<button class="lvl" id="toProf"><div class="av">'+L.e+'</div><div class="in"><b>Niveau '+L.n+' · '+L.name+'</b><div class="track"><i style="width:0" data-w="'+Math.round(L.pct)+'"></i></div><small>'+L.into+' / '+L.step+' XP · voir mon profil</small></div><em>›</em></button>'+
    '<div class="motto">❤️ Régularité + Bienveillance = Transformation</div>';
   var nx=function(){tipI++;var T2=tips();tipI=tipI%T2.length;$('tipTxt').textContent=T2[tipI];var b=$('bubble');b.style.animation='none';void b.offsetWidth;b.style.animation='pop .4s cubic-bezier(.3,1.5,.5,1)'};
   $('bubble').onclick=nx;$('petSvg').onclick=nx;
@@ -797,42 +822,66 @@ function auraHero(k){
 function heroHtml(k){return k==='met'?fireHero():auraHero(k)}
 function openTool(k){
   tool=k;var T=TOOLS[k];
-  var cta=k==='met'?'<a class="cta sm" href="metabolisme.html">Commencer</a>':'<button class="cta sm" id="goStart">Commencer</button>';
   $('landFit').innerHTML=
    '<h1 class="title center gtext" style="--g:'+T.grad+';font-size:38px">'+T.name+'</h1>'+
    '<div class="hero">'+heroHtml(k)+'</div>'+
    '<p class="sub2">'+T.sub[0]+'<br>'+T.sub[1]+'</p>'+
    '<div class="tri"><button class="t1" data-p="disc"><span class="ic">✨</span>Découvrir</button><button class="t2" data-p="steps"><span class="ic">📋</span>Instructions</button><button class="t3" data-p="tips"><span class="ic">💡</span>Conseils</button></div>'+
-   cta;
+   '<button class="cta sm" id="goStart">Commencer</button>';
   document.querySelectorAll('#landFit .tri button').forEach(function(b){b.onclick=function(){openInfo(k,b.dataset.p)}});
-  var g=$('goStart');if(g)g.onclick=function(){k==='med'?go('pick'):openPomo()};
+  $('goStart').onclick=function(){openPick(k)};
   go('land');
 }
 function openInfo(k,page){
   var T=TOOLS[k],h='',name={disc:'Découvrir',steps:'Instructions',tips:'Conseils'}[page];
-  var head='<h1 class="title gtext" style="--g:'+T.grad+'">'+name+'</h1>';
+  var head='<h1 class="title tt" style="--c:'+T.strong+'">'+name+'</h1>';
   if(page==='disc'){
-    h=head+'<div class="grid2 stag">'+T.disc.map(function(x,i){var c=TINT[x[3]];return '<button class="ben" data-i="'+i+'" style="--bt:'+c[0]+';--bs:'+c[1]+'"><div class="e">'+x[0]+'</div><b>'+x[1]+'</b><p>'+x[2]+'</p></button>'}).join('')+'</div><div class="detail" id="detail" style="--bt:#fff"><span class="hint">👆 Touche une carte pour en savoir plus</span></div>';
+    h=head+lumiRow('Touche une carte pour en savoir plus 👆','discLumi')+'<div class="grid2 stag">'+T.disc.map(function(x,i){var c=TINT[x[3]];return '<button class="ben" data-i="'+i+'" style="--bt:'+c[0]+';--bs:'+c[1]+'"><div class="e a'+((i%4)+1)+'">'+x[0]+'</div><b>'+x[1]+'</b></button>'}).join('')+'</div><div class="detail empty" id="detail"><span class="hint">Ton explication apparaîtra ici ✨</span></div>';
   }else if(page==='steps'){
     var cols=['coral','orange','sun','leaf','sky','grape'];
     h=head+'<div class="list stag">'+T.steps.map(function(x,i){var c=TINT[cols[i%cols.length]];return '<div class="row" style="--bt:'+c[0]+';--bs:'+c[1]+'"><div class="e">'+x[0]+'</div><div><b><small>'+(i+1)+'.</small>'+x[1]+'</b><p>'+x[2]+'</p></div></div>'}).join('')+'</div>';
   }else{
     h=head+'<div class="list stag">'+T.tips.map(function(x){var c=TINT[x[3]];return '<div class="row" style="--bt:'+c[0]+';--bs:'+c[1]+'"><div class="e">'+x[0]+'</div><div><b>'+x[1]+'</b><p>'+x[2]+'</p></div></div>'}).join('')+'</div>';
   }
-  $('infoFit').innerHTML=h+'<div class="grow"></div><button class="cta alt sm" id="infoBack">← Retour au menu</button>';
+  $('infoFit').innerHTML=h+'<div class="grow"></div><button class="cta alt sm" id="infoBack">← Retour</button>';
   $('infoBack').onclick=back;
   if(page==='disc')document.querySelectorAll('#infoFit .ben').forEach(function(b){b.onclick=function(){
     document.querySelectorAll('#infoFit .ben').forEach(function(x){x.classList.toggle('sel',x===b)});
-    var x=T.disc[+b.dataset.i],c=TINT[x[3]],d=$('detail');d.style.setProperty('--bt',c[0]);d.innerHTML='<b>'+x[0]+' '+x[1]+'</b>'+x[4];d.classList.remove('pop');void d.offsetWidth;d.classList.add('pop')}});
+    var x=T.disc[+b.dataset.i],c=TINT[x[3]],d=$('detail');d.className='detail';d.style.setProperty('--bt',c[0]);d.innerHTML='<b>'+x[0]+' '+x[1]+'</b>'+x[4];void d.offsetWidth;d.classList.add('pop');
+    $('discLumi').textContent='Voilà ! Touche une autre carte 👆';refit('info')}});
   go('info');
 }
 
-/* ---------- pick ---------- */
-var scanMin=5;
-$('durs').onclick=function(e){var b=e.target.closest('button');if(!b)return;scanMin=+b.dataset.m;[].forEach.call($('durs').children,function(x){x.classList.toggle('on',x===b)})};
-$('pickBack').onclick=back;
-$('goBreath').onclick=function(){startRun({type:'breath',total:300,min:5,chip:'🌊 Respiration 3·6·5',voice:false})};
-$('goScan').onclick=function(){startRun({type:'scan',total:scanMin*60,min:scanMin,chip:'🧘 Scan du corps',voice:true})};
+/* ---------- pick (shared by every tool) ---------- */
+var scanMin=5,PICKED=null;
+function lumiRow(txt,id){return '<div class="petrow sm"><svg viewBox="0 0 240 240" aria-hidden="true"><use href="#lumi"/></svg><div class="bubble"><span'+(id?' id="'+id+'"':'')+'>'+txt+'</span></div></div>'}
+var OPTS={
+ med:{title:'Choisis ta séance',lumi:'Touche une séance pour savoir pourquoi la faire 👆',items:[
+  {e:'🌊',t:'Respiration 3·6·5',s:'5 min · 30 cycles · rythme lent',c:'sky',why:'Six respirations par minute pendant 5 minutes : ton souffle ralentit, les tensions se relâchent et tu te sens plus posé. Idéale le matin, avant un moment important, ou quand tu te sens pressé.',go:function(){startRun({type:'breath',total:300,min:5,chip:'🌊 Respiration 3·6·5',voice:false})}},
+  {e:'🧘',t:'Scan du corps',s:'Voix douce, des pieds à la tête',c:'grape',durs:true,why:'Une voix douce te guide des pieds jusqu’à la tête pour repérer les tensions et les laisser partir. Parfait le soir, ou pour une vraie pause qui te ramène dans ton corps.',go:function(){startRun({type:'scan',total:scanMin*60,min:scanMin,chip:'🧘 Scan du corps',voice:true})}}]},
+ pom:{title:'Choisis ton rythme',lumi:'Touche un rythme pour savoir quand le choisir 👆',items:[
+  {e:'🍅',t:'Tomate classique',s:'25 min de travail · 5 min de pause',c:'coral',why:'25 minutes sur une seule tâche, puis 5 minutes de vraie pause. Après 4 tomates, une grande pause. Idéal pour t’y mettre sans te disperser.',go:function(){openPomo('classic')}},
+  {e:'⚡',t:'Tomate courte',s:'15 min de travail · 3 min de pause',c:'sun',why:'Une version express : 15 minutes, puis 3 minutes de pause. Parfait quand tu manques de temps ou d’énergie pour te lancer.',go:function(){openPomo('short')}}]},
+ met:{title:'Ton calcul',lumi:'Touche la carte pour savoir pourquoi le faire 👆',items:[
+  {e:'🔥',t:'Mon métabolisme',s:'Quelques étapes, un résultat clair',c:'orange',why:'Connaître l’énergie que ton corps dépense chaque jour t’aide à adapter ton alimentation à ton objectif. Quelques questions, puis un résultat simple à comprendre.',go:function(){location.href='metabolisme.html'}}]}
+};
+function openPick(k){tool=k;PICKED=null;renderPick();go('pick')}
+function renderPick(){
+  var O=OPTS[tool],T=TOOLS[tool];
+  var cards=O.items.map(function(x,i){var c=TINT[x.c];return '<button class="opt" data-i="'+i+'" style="--bt:'+c[0]+';--bs:'+c[1]+'"><span class="oe a'+((i%4)+1)+'">'+x.e+'</span><div><b>'+x.t+'</b><span>'+x.s+'</span></div></button>'}).join('');
+  $('pickFit').innerHTML='<h1 class="title tt" style="--c:'+T.strong+'">'+O.title+'</h1>'+lumiRow(O.lumi,'pickLumi')+'<div class="opts stag">'+cards+'</div><div id="pickDet"><div class="detail empty"><span class="hint">Ton explication apparaîtra ici ✨</span></div></div><div class="grow"></div><button class="cta alt sm" id="pickBack">← Retour</button>';
+  $('pickBack').onclick=back;
+  document.querySelectorAll('#pickFit .opt').forEach(function(b){b.onclick=function(){
+    var i=+b.dataset.i,x=O.items[i],c=TINT[x.c];PICKED=i;
+    document.querySelectorAll('#pickFit .opt').forEach(function(y){y.classList.toggle('sel',y===b)});
+    var d=x.durs?'<div class="durs" id="durs"><button data-m="3"'+(scanMin===3?' class="on"':'')+'>3 min</button><button data-m="5"'+(scanMin===5?' class="on"':'')+'>5 min</button><button data-m="10"'+(scanMin===10?' class="on"':'')+'>10 min</button></div>':'';
+    $('pickDet').innerHTML='<div class="detail pop" style="--bt:'+c[0]+'"><b>'+x.e+' Pourquoi le faire ?</b>'+x.why+d+'</div><button class="cta sm" id="pickGo" style="margin-top:12px">Commencer</button>';
+    $('pickLumi').textContent='Voilà ! Quand tu es prêt, appuie sur Commencer 🌟';
+    $('pickGo').onclick=x.go;
+    var du=$('durs');if(du)du.onclick=function(e){var q=e.target.closest('button');if(!q)return;scanMin=+q.dataset.m;[].forEach.call(du.children,function(z){z.classList.toggle('on',z===q)})};
+    refit('pick');
+  }});
+}
 
 /* ---------- session engine ---------- */
 var R=null,VOICE=true,SPEED=1;
@@ -911,16 +960,18 @@ $('sVoice').onclick=function(){VOICE=!VOICE;$('sVoice').textContent=VOICE?'🔊'
 $('sStop').onclick=function(){if(R&&R.type==='pomo'){pomoReset();return}stopRun();var p=hist.pop();show(p||'pick')};
 
 /* ---------- pomodoro ---------- */
-var P={mode:'work',count:0};
+var P={mode:'work',count:0,cfg:'classic'};
+var PMS={classic:{w:1500,s:300,l:900},short:{w:900,s:180,l:600}};
+function ptime(m){var c=PMS[P.cfg||'classic'];return m==='work'?c.w:m==='short'?c.s:c.l}
 var PM={work:{t:1500,chip:'🍅 Travail',ph:'Au travail'},short:{t:300,chip:'☕ Pause',ph:'Pause'},long:{t:900,chip:'🏖️ Grande pause',ph:'Grande pause'}};
 function pomoDots(){var h='';for(var i=0;i<4;i++)h+='<i class="'+(i<P.count%4||(P.count>0&&P.count%4===0&&P.mode==='long')?'on':'')+'">'+((i<P.count%4||(P.count>0&&P.count%4===0&&P.mode==='long'))?'🍅':'')+'</i>';$('sDots').innerHTML=h}
-function openPomo(){
-  P={mode:'work',count:0};
-  startRun({type:'pomo',total:PM.work.t,min:25,chip:PM.work.chip,voice:false});
+function openPomo(cfg){
+  P={mode:'work',count:0,cfg:cfg||'classic'};
+  startRun({type:'pomo',total:ptime('work'),min:Math.round(ptime('work')/60),chip:PM.work.chip,voice:false});
   R.paused=true;$('sPause').textContent='▶';pomoUi();
 }
 function pomoUi(){
-  var m=PM[P.mode];R.total=m.t;R.min=Math.round(m.t/60);$('sChip').textContent=m.chip+' · tomate '+(Math.min(4,(P.mode==='work'?P.count%4:Math.max(0,(P.count-1)%4))+1))+' / 4';
+  var m=PM[P.mode];R.total=ptime(P.mode);R.min=Math.round(R.total/60);$('sChip').textContent=m.chip+' · tomate '+(Math.min(4,(P.mode==='work'?P.count%4:Math.max(0,(P.count-1)%4))+1))+' / 4';
   $('sPhase').textContent=m.ph;$('sCap').textContent=P.mode==='work'?'Une seule tâche. Appuie sur lecture pour démarrer.':'Respire, bois de l’eau, regarde au loin.';
   $('sTime').textContent=fmt(R.total-R.el);setProg(R.el/R.total);$('sNote').textContent='Pause longue après 4 tomates.';pomoDots();
   $('sCore').style.transform='';
@@ -928,7 +979,7 @@ function pomoUi(){
 function chime(){try{var C=window.AudioContext||window.webkitAudioContext,a=new C();[660,880,1100].forEach(function(f,i){var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,a.currentTime+i*.22);g.gain.linearRampToValueAtTime(.18,a.currentTime+i*.22+.03);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+i*.22+.6);o.connect(g);g.connect(a.destination);o.start(a.currentTime+i*.22);o.stop(a.currentTime+i*.22+.65)})}catch(e){}}
 function pomoDone(){
   var r=R,nb=[];chime();
-  if(P.mode==='work'){nb=record('pom',25);P.count++;P.mode=(P.count%4===0)?'long':'short'}
+  if(P.mode==='work'){nb=record('pom',Math.round(ptime('work')/60));P.count++;P.mode=(P.count%4===0)?'long':'short'}
   else{P.mode='work'}
   r.el=0;r.paused=true;r.ending=false;r.last=performance.now();$('sPause').textContent='▶';pomoUi();r.raf=requestAnimationFrame(loop);
   if(nb.length)setTimeout(function(){showBadges(nb)},400);
